@@ -16,14 +16,14 @@ const SingleStopwatchContainer = () => {
   const { id } = useParams();
   const history = useHistory();
 
-  const { stopwatch, isFetching } = useGetStopwatch(id);
-  const { resetStopwatch } = useResetStopwatch();
-  const { toggleStopwatch } = useToggleStopwatch();
+  const { stopwatch, getStopwatchError, isFetching } = useGetStopwatch(id);
+  const { resetStopwatch, isResetStopwatchLoading, resetStopwatchError } = useResetStopwatch();
+  const { toggleStopwatch, isToggleStopwatchLoading, toggleStopwatchError } = useToggleStopwatch();
   const { deleteStopwatch } = useDeleteStopwatch();
 
   const { started, toggles } = stopwatch || {};
 
-  const { time, isRunning, toggle, reset } = useStopwatchTimer({
+  const { time, isRunning, toggle, resStart } = useStopwatchTimer({
     started,
     toggles
   });
@@ -31,9 +31,8 @@ const SingleStopwatchContainer = () => {
   const handleResetButtonClick = async () => {
     const timeNow = Date.now();
     await resetStopwatch(id, timeNow);
-    await toggleStopwatch(id, timeNow);
-    reset();
-  }
+    resStart();
+  };
 
   const handleToggleButtonClick = async () => {
     await toggleStopwatch(id);
@@ -43,16 +42,25 @@ const SingleStopwatchContainer = () => {
   const handleDeleteButtonClick = async () => {
     await deleteStopwatch(id);
     history.push(ROUTES.home);
-  }
+  };
+
+  const isError = getStopwatchError || toggleStopwatchError || resetStopwatchError;
 
   return (
-    <PageLayout isLoading={isFetching}>
+    <PageLayout isLoading={isFetching} isDisable={isError}>
       <Header backLink={ROUTES.home} />
-      <StopwatchTimer time={time} variant="big" />
+      <StopwatchTimer time={time} variant="big" isDisabled={isError} />
       <ActionButtonsLayout>
-        <Button size="small" onClick={handleResetButtonClick}>Reset</Button>
+        <Button
+          size="small"
+          isDisabled={isResetStopwatchLoading}
+          onClick={handleResetButtonClick}
+        >
+          Reset
+        </Button>
         <Button
           variant="success"
+          isDisabled={isToggleStopwatchLoading}
           onClick={handleToggleButtonClick}
         >
           {isRunning ? 'Stop' : 'Start'}

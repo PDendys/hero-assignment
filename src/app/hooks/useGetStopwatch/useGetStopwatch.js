@@ -24,5 +24,5 @@ export const useGetStopwatch = (id) => {
   } = response || {};
   const stopwatch = data?.data?.result;
 
-  return { stopwatch, error, isFetching, refetch };
+  return { stopwatch, getStopwatchError: error, isFetching, refetch };
 }

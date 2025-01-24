@@ -2,9 +2,9 @@ import React from "react";
 import Loader from "@/ui/Loader";
 import { PageLayoutStyled } from "./styles";
 
-const PageLayout = ({ isLoading, children }) => {
+const PageLayout = ({ isLoading, isDisable = false, children }) => {
   return (
-    <PageLayoutStyled>
+    <PageLayoutStyled isDisable={isDisable}>
       {
         isLoading
           ? <Loader />

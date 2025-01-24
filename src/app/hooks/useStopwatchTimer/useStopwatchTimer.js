@@ -28,6 +28,11 @@ export const useStopwatchTimer = ({ started = null, toggles = [] }) => {
     setTime(0);
   }, []);
 
+  const resStart = useCallback(() => {
+    setTime(0);
+    start();
+  }, []);
+
   const toggle = useCallback(() => {
     if (isRunning) {
       stop();
@@ -60,6 +65,7 @@ export const useStopwatchTimer = ({ started = null, toggles = [] }) => {
     start,
     stop,
     reset,
+    resStart,
     toggle,
   };
 }

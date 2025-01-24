@@ -8,7 +8,7 @@ const toggleStopwatchMutation = async ({ id, time }) => {
 }
 
 export const useToggleStopwatch = () => {
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, isLoading, error } = useMutation({
     mutationFn: toggleStopwatchMutation,
     onError: handleError
   });
@@ -18,5 +18,9 @@ export const useToggleStopwatch = () => {
     return await mutateAsync({ id, time: time || currentTimeStamp });
   };
 
-  return { toggleStopwatch };
+  return {
+    toggleStopwatch,
+    isToggleStopwatchLoading: isLoading,
+    toggleStopwatchError: error
+  };
 }

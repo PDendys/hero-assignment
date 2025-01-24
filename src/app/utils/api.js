@@ -6,7 +6,7 @@ import {
   RESPONSE_THRESHOLD
 } from "@/constants";
 
-let source;
+let sources = {};
 let didTimeout = false;
 
 const { signal } = new AbortController();
@@ -24,15 +24,15 @@ export const callAPI = async (
   body= null
 ) => {
   try {
-    if (source) {
-      source.cancel(RESPONSE_ERROR_MESSAGES.cancel.dueNewRequest);
+    if (sources[url]) {
+      sources[url].cancel(RESPONSE_ERROR_MESSAGES.cancel.dueNewRequest);
     }
 
-    source = CancelToken.source();
+    sources[url] = CancelToken.source();
 
     const timer = setTimeout(() => {
       didTimeout = true;
-      source.cancel(RESPONSE_ERROR_MESSAGES.cancel.dueSlowRequest);
+      sources[url].cancel(RESPONSE_ERROR_MESSAGES.cancel.dueSlowRequest);
     }, RESPONSE_THRESHOLD);
 
     const options = {
@@ -40,7 +40,7 @@ export const callAPI = async (
       url,
       signal,
       body: body ? JSON.stringify(body) : null,
-      cancelToken: source.token,
+      cancelToken: sources[url].token,
     };
 
     if (body) {
@@ -50,7 +50,7 @@ export const callAPI = async (
     const { data } = await apiClient(options);
 
     clearTimeout(timer);
-    source = null;
+    delete sources[url];
 
     return { data};
 
@@ -64,7 +64,7 @@ export const makeUrl = (url, id) => {
 }
 
 export const handleError = (error) => {
-  if (error.message === `CanceledError: ${RESPONSE_ERROR_MESSAGES.cancel.dueSlowRequest}`) {
+  if (error.message !== `CanceledError: ${RESPONSE_ERROR_MESSAGES.cancel.dueNewRequest}`) {
     alert("Oops! We're currently experiencing some issues. Please wait a moment and try refreshing the page.")
   }
 }
