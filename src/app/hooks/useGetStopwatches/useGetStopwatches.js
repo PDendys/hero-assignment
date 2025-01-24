@@ -22,7 +22,8 @@ export const useGetStopwatches = () => {
         return undefined;
       },
       refetchOnWindowFocus: false,
-      onError: handleError
+      onError: handleError,
+      cacheTime: 200
     });
   const {
     data: responseData,

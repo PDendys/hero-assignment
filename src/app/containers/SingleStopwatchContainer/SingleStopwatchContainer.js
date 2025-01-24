@@ -29,14 +29,14 @@ const SingleStopwatchContainer = () => {
   });
 
   const handleResetButtonClick = async () => {
+    resStart();
     const timeNow = Date.now();
     await resetStopwatch(id, timeNow);
-    resStart();
   };
 
   const handleToggleButtonClick = async () => {
-    await toggleStopwatch(id);
     toggle();
+    await toggleStopwatch(id);
   };
 
   const handleDeleteButtonClick = async () => {
