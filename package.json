@@ -1,0 +1,32 @@
+{
+  "name": "frontend-assignment",
+  "version": "1.2.2",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "start": "razzle start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
+    "@kinday/njv": "^0.4.0",
+    "@tanstack/react-query": "^4.36.1",
+    "axios": "^1.7.9",
+    "body-parser": "^1.19.0",
+    "connect": "3.7.0",
+    "express": "^4.17.1",
+    "lokijs": "^1.5.8",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-is": "^16.13.1",
+    "react-router-dom": "5.1.2",
+    "react-ssr-prepass": "1.2.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^14.6.1",
+    "razzle": "3.0.0"
+  }
+}
