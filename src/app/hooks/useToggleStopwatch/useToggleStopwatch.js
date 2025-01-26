@@ -15,7 +15,10 @@ export const useToggleStopwatch = () => {
 
   const toggleStopwatch = async (id, time = null) => {
     const currentTimeStamp = Date.now();
-    return await mutateAsync({ id, time: time || currentTimeStamp });
+    const res = await mutateAsync({ id, time: time || currentTimeStamp });
+    const { result } = res || {};
+
+    return result;
   };
 
   return {

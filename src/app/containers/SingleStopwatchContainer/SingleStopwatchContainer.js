@@ -1,6 +1,9 @@
 import React from 'react';
 import { useParams, useHistory } from "react-router-dom";
 import Header from "@/ui/Header";
+import Button from "@/ui/Button";
+import { ROUTES } from "@/constants";
+import { getRunningTime } from "@/utils";
 import PageLayout from "@/layouts/PageLayout";
 import ActionButtonsLayout from "@/layouts/ActionButtonsLayout";
 import StopwatchTimer from "@/components/StopwatchTimer";
@@ -9,8 +12,6 @@ import { useGetStopwatch} from "@/hooks/useGetStopwatch";
 import { useResetStopwatch } from "@/hooks/useResetStopwatch";
 import { useToggleStopwatch } from "@/hooks/useToggleStopwatch";
 import { useDeleteStopwatch } from "@/hooks/useDeleteStopwatch";
-import { ROUTES } from "@/constants";
-import Button from "@/ui/Button";
 
 const SingleStopwatchContainer = () => {
   const { id } = useParams();
@@ -23,7 +24,7 @@ const SingleStopwatchContainer = () => {
 
   const { started, toggles } = stopwatch || {};
 
-  const { time, isRunning, toggle, resStart } = useStopwatchTimer({
+  const { time, isRunning, toggle, resStart, setTime } = useStopwatchTimer({
     started,
     toggles
   });
@@ -36,7 +37,12 @@ const SingleStopwatchContainer = () => {
 
   const handleToggleButtonClick = async () => {
     toggle();
-    await toggleStopwatch(id);
+    const updatedResult = await toggleStopwatch(id);
+    const { toggles: updatedToggles } = updatedResult || {};
+
+    if(updatedToggles?.length) {
+      setTime(getRunningTime(started, updatedToggles));
+    }
   };
 
   const handleDeleteButtonClick = async () => {

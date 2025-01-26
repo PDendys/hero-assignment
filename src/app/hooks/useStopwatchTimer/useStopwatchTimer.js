@@ -67,5 +67,6 @@ export const useStopwatchTimer = ({ started = null, toggles = [] }) => {
     reset,
     resStart,
     toggle,
+    setTime
   };
 }
